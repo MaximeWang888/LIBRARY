@@ -1,6 +1,10 @@
 package servlet;
 
+import mediatek2022.Document;
+import mediatek2022.Mediatheque;
+
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,6 +24,10 @@ public class AbonneServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        List<Document> documentList = Mediatheque.getInstance().tousLesDocumentsDisponibles();
+
+        request.setAttribute("documentList", documentList);
 
         RequestDispatcher dispatcher //
                 = this.getServletContext()//

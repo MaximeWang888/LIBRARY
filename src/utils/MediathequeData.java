@@ -40,7 +40,37 @@ public class MediathequeData implements PersistentMediatheque{
 	// renvoie la liste de tous les documents disponibles de la médiathèque
 	@Override
 	public List<Document> tousLesDocumentsDisponibles() {
-		return null;
+		List<Document> documents = new ArrayList<>();
+		String query = "SELECT * from document";
+
+		try {
+			PreparedStatement dynStatement = connection.prepareStatement(query);
+
+			ResultSet resultStatement = dynStatement.executeQuery();
+
+			while (resultStatement.next()) {
+				// Depuis la db recuperee les donnees de chaque document
+				int idDocument = resultStatement.getInt("idDocument");
+				String titre = resultStatement.getString("titre");
+				int dateSorti = resultStatement.getInt("dateSorti");
+				String auteur = resultStatement.getString("auteur");
+				boolean isLivre = resultStatement.getBoolean("isLivre");
+				boolean isDVD = resultStatement.getBoolean("isDVD");
+				boolean isCD = resultStatement.getBoolean("isCD");
+				boolean isDisponible = resultStatement.getBoolean("isDisponible");
+
+				if (isLivre)
+					documents.add(new Livre(idDocument, titre, auteur, isDisponible, dateSorti));
+				else if (isDVD)
+					documents.add(new DVD(idDocument, titre, auteur, isDisponible, dateSorti));
+				else if (isCD)
+					documents.add(new CDs(idDocument, titre, auteur, isDisponible, dateSorti));
+			}
+		} catch (SQLException throwables) {
+			throwables.printStackTrace();
+		}
+		System.out.println("Il y a eu un total de " + documents.size() + " documents.");
+		return documents;
 	}
 
 	// va récupérer le User dans la BD et le renvoie
@@ -97,21 +127,19 @@ public class MediathequeData implements PersistentMediatheque{
 				Boolean isLivre = resultStatement.getBoolean("isLivre");
 				Boolean isDVD = resultStatement.getBoolean("isDVD");
 				Boolean isCD = resultStatement.getBoolean("isCD");
+				int dateSorti = resultStatement.getInt("dateSorti");
 
 				// Comparer les login et password à celui entrer par l'utilisateur
 				// Et renvoyer le bon Utilisateur
 				if (idDocument == numDocument)
 					if (isLivre) {
-						int nbPages = resultStatement.getInt("nbPages");
-						return new Livre(title, auteur, isDisponible, nbPages);
+						return new Livre(idDocument, title, auteur, isDisponible, dateSorti);
 					}
 					else if (isDVD) {
-						int capaciteGiga = resultStatement.getInt("capaciteGiga");
-						return new DVD(title, auteur, isDisponible, capaciteGiga);
+						return new DVD(idDocument, title, auteur, isDisponible, dateSorti);
 					}
 					else if (isCD){
-						int anneeSortie = resultStatement.getInt("anneeSortie");
-						return new CDs(title, auteur, isDisponible, anneeSortie);
+						return new CDs(idDocument, title, auteur, isDisponible, dateSorti);
 					}
 			}
 		} catch (SQLException throwables) {
@@ -127,8 +155,8 @@ public class MediathequeData implements PersistentMediatheque{
 		// args[0] -> le titre
 		// args [1] --> l'auteur
 		// etc... variable suivant le type de document
-		String query = "INSERT INTO document (idDocument, isLivre, isDVD, isCD, titre, dateSorti, auteur) VALUES " +
-				"(?, ?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO document (idDocument, isLivre, isDVD, isCD, titre, dateSorti, auteur, isDisponible) VALUES " +
+				"(?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try {
 			PreparedStatement dynStatement = connection.prepareStatement(query);
@@ -149,7 +177,8 @@ public class MediathequeData implements PersistentMediatheque{
 			// AUTEUR
 			dynStatement.setString(7, (String) args[2]); // 7 -> auteur
 
-//			System.out.println(getDocument(idGenerator).toString());
+			dynStatement.setBoolean(8, false); // au départ il est pas encore emprunter donc disponible
+
 			System.out.println("Le document a ete ajoutee a la db");
 			dynStatement.executeUpdate();
 			dynStatement.close();

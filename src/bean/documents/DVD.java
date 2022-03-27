@@ -2,10 +2,8 @@ package bean.documents;
 
 public class DVD extends ADocument {
 
-    private int capaciteGiga;
-
-    public DVD(String title, String auteur, Boolean isDisponible, int capaciteGiga) {
-        super(title, auteur, isDisponible);
-        this.capaciteGiga = capaciteGiga;
+    public DVD(int idDocument, String title, String auteur, Boolean isDisponible, int dateSorti) {
+        super(idDocument, title, auteur, isDisponible, dateSorti);
     }
+
 }

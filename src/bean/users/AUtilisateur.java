@@ -2,8 +2,6 @@ package bean.users;
 
 import mediatek2022.Utilisateur;
 
-import java.util.List;
-
 public abstract class AUtilisateur implements Utilisateur {
 
     private String name;

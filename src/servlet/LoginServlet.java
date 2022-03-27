@@ -35,7 +35,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        System.out.println("le debut du post de la page LOGIN ....");
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
         Utilisateur userAccount = Mediatheque.getInstance().getUser(userName, password);

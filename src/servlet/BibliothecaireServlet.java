@@ -1,8 +1,6 @@
 package servlet;
 
 import mediatek2022.Mediatheque;
-import mediatek2022.Utilisateur;
-import utils.AppUtils;
 
 import java.io.IOException;
 
@@ -35,13 +33,13 @@ public class BibliothecaireServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String typeDocument = request.getParameter("typeDocument");
+        System.out.println("le debut du post de l'ajout document BIBLIOTHECAIRE ... ");
+        String typeDocument = request.getParameter("typeDocument"); // 2 = livre, 3 = DVD, 4 = CD
         String title = request.getParameter("title");
         String auteur = request.getParameter("auteur");
-        Utilisateur emprunteur = AppUtils.getLoginedUser(request.getSession());
+        String dateSorti = request.getParameter("dateSorti");
 
-        Mediatheque.getInstance().ajoutDocument(Integer.parseInt(typeDocument), title, auteur);
+        Mediatheque.getInstance().ajoutDocument(Integer.parseInt(typeDocument), title, dateSorti, auteur);
 
         doGet(request, response);
     }

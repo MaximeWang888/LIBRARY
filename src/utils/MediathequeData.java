@@ -1,7 +1,7 @@
 package utils;
 
-import bean.Abonne;
-import bean.Bibliothecaire;
+import bean.users.Abonne;
+import bean.users.Bibliothecaire;
 import config.SecurityConfig;
 import mediatek2022.Document;
 import mediatek2022.Mediatheque;
@@ -83,10 +83,9 @@ public class MediathequeData implements PersistentMediatheque {
 			// Et renvoyer le bon Utilisateur
 			if (rLogin.equals(login) && rPassword.equals(password))
 				if (rIsAbonne)
-					return new Abonne(rName, login, password, false, SecurityConfig.ROLE_ABONNE);
+					return new Abonne(rName, false);
 				else
-					return new Bibliothecaire(rName, login, password, true,
-							SecurityConfig.ROLE_BIBLIOTHECAIRE);
+					return new Bibliothecaire(rName, true);
 
 		}
 		return null;

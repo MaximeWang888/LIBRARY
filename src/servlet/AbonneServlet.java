@@ -23,7 +23,7 @@ public class AbonneServlet extends HttpServlet {
 
         RequestDispatcher dispatcher //
                 = this.getServletContext()//
-                .getRequestDispatcher("/WEB-INF/views/espaceBibliothecaireView.jsp");
+                .getRequestDispatcher("/WEB-INF/views/espaceAbonneView.jsp");
 
         dispatcher.forward(request, response);
     }

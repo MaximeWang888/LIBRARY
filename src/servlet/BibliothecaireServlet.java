@@ -20,9 +20,12 @@ public class BibliothecaireServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+
+
         RequestDispatcher dispatcher //
                 = this.getServletContext()//
-                .getRequestDispatcher("/WEB-INF/views/espaceAbonneView.jsp");
+                .getRequestDispatcher("/WEB-INF/views/espaceBibliothecaireView.jsp");
 
         dispatcher.forward(request, response);
     }

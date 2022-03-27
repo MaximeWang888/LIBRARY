@@ -11,6 +11,7 @@ import mediatek2022.PersistentMediatheque;
 import mediatek2022.Utilisateur;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -121,7 +122,8 @@ public class MediathequeData implements PersistentMediatheque{
 
 	@Override
 	public void ajoutDocument(int type, Object... args) {
-
+		List<Integer> listInt = new ArrayList<>();
+		listInt.add(2); listInt.add(3); listInt.add(4);
 		// args[0] -> le titre
 		// args [1] --> l'auteur
 		// etc... variable suivant le type de document
@@ -134,9 +136,12 @@ public class MediathequeData implements PersistentMediatheque{
 			// idDOCUMENT
 			dynStatement.setInt(1, idGenerator); // 1 -> idDocument
 			// TYPE
-			dynStatement.setInt(type, 1); // type = 2 ou 3 ou 4
-			dynStatement.setInt(3, 0); // type = 2 ou 3 ou 4
-			dynStatement.setInt(4, 0); // type = 2 ou 3 ou 4
+			for (int typeId:listInt) { // 1
+				if (type != typeId)
+					dynStatement.setInt(typeId, 0);
+				else
+					dynStatement.setInt(type, 1);
+			}
 			// TITRE
 			dynStatement.setString(5, (String) args[0]);
 			// DATESORTI

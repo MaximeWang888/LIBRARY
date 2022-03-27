@@ -69,7 +69,7 @@ public class MediathequeData implements PersistentMediatheque{
 		} catch (SQLException throwables) {
 			throwables.printStackTrace();
 		}
-		System.out.println("Il y a eu un total de " + documents.size() + " documents.");
+
 		return documents;
 	}
 
@@ -155,8 +155,10 @@ public class MediathequeData implements PersistentMediatheque{
 		// args[0] -> le titre
 		// args [1] --> l'auteur
 		// etc... variable suivant le type de document
-		String query = "INSERT INTO document (idDocument, isLivre, isDVD, isCD, titre, dateSorti, auteur, isDisponible) VALUES " +
-				"(?, ?, ?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO " +
+				"document (idDocument, isLivre, isDVD, isCD, titre, dateSorti, auteur, isDisponible, emprunteur) " +
+				"VALUES " +
+				"(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try {
 			PreparedStatement dynStatement = connection.prepareStatement(query);
@@ -177,7 +179,9 @@ public class MediathequeData implements PersistentMediatheque{
 			// AUTEUR
 			dynStatement.setString(7, (String) args[2]); // 7 -> auteur
 
-			dynStatement.setBoolean(8, false); // au départ il est pas encore emprunter donc disponible
+			dynStatement.setBoolean(8, true); // au départ il est pas encore emprunter donc disponible
+
+			dynStatement.setString(9, null);
 
 			System.out.println("Le document a ete ajoutee a la db");
 			dynStatement.executeUpdate();

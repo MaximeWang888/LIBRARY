@@ -2,6 +2,8 @@ package servlet;
 
 import mediatek2022.Document;
 import mediatek2022.Mediatheque;
+import mediatek2022.Utilisateur;
+import utils.AppUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -39,6 +41,28 @@ public class AbonneServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("le debut du post ABONNE ... ");
+
+        String emprunterDoc = request.getParameter("emprunterDoc");
+        String rendreDoc = request.getParameter("rendreDoc");
+        Utilisateur currentUser = AppUtils.getLoginedUser(request.getSession());
+
+        Mediatheque mediatheque = Mediatheque.getInstance();
+        Document documentEmprunter = mediatheque.getDocument(Integer.parseInt(emprunterDoc));
+        Document documentRendu = mediatheque.getDocument(Integer.parseInt(rendreDoc));
+
+        try {
+            for (Document doc: mediatheque.tousLesDocumentsDisponibles()) {
+                if (doc.toString().contains("idDocument=" + emprunterDoc)) {
+                    mediatheque.emprunt(documentEmprunter, currentUser);
+                }
+                else if (doc.toString().contains("idDocument=" + rendreDoc)) {
+                    mediatheque.retour(documentRendu, currentUser);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         doGet(request, response);
     }

@@ -1,5 +1,9 @@
 package servlet;
 
+import mediatek2022.Mediatheque;
+import mediatek2022.Utilisateur;
+import utils.AppUtils;
+
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
@@ -21,8 +25,6 @@ public class BibliothecaireServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-
-
         RequestDispatcher dispatcher //
                 = this.getServletContext()//
                 .getRequestDispatcher("/WEB-INF/views/espaceBibliothecaireView.jsp");
@@ -33,6 +35,13 @@ public class BibliothecaireServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        String typeDocument = request.getParameter("typeDocument");
+        String title = request.getParameter("title");
+        String auteur = request.getParameter("auteur");
+        Utilisateur emprunteur = AppUtils.getLoginedUser(request.getSession());
+
+        Mediatheque.getInstance().ajoutDocument(Integer.parseInt(typeDocument), title, auteur);
 
         doGet(request, response);
     }

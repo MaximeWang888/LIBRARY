@@ -38,7 +38,6 @@ public class LoginServlet extends HttpServlet {
 
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
-//        UserAccount userAccount = DataDAO.findUser(userName, password);
         Utilisateur userAccount = Mediatheque.getInstance().getUser(userName, password);
 
         if (userAccount == null) {
@@ -65,8 +64,7 @@ public class LoginServlet extends HttpServlet {
         if (requestUri != null) {
             response.sendRedirect(requestUri);
         } else {
-            // Par défaut, après l'achèvement de la connexion
-            // redirigez à la page /userInfo
+            // Par défaut, après l'achèvement de la connexion redirigez à la page "/userInfo"
             response.sendRedirect(request.getContextPath() + "/userInfo");
         }
 

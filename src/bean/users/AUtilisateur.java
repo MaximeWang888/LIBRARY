@@ -6,6 +6,7 @@ public abstract class AUtilisateur implements Utilisateur {
 
     private String name;
     private boolean isBibliothecaire;
+    private Object[] data;
 
     public AUtilisateur(String name, boolean isBibliothecaire) {
         this.name = name;
@@ -24,7 +25,7 @@ public abstract class AUtilisateur implements Utilisateur {
 
     @Override
     public Object[] data() {
-        return new Object[0];
+        return this.data;
     }
 
 }

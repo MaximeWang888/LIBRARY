@@ -17,12 +17,20 @@ import java.util.List;
 public class MediathequeData implements PersistentMediatheque {
 
 	static {
-		Mediatheque.getInstance().setData(new MediathequeData());
+		try {
+			Mediatheque.getInstance().setData(new MediathequeData());
+		} catch (SQLException throwables) {
+			throwables.printStackTrace();
+		}
 	}
 
 	private Connection connection;
 
-	private MediathequeData() {
+	private MediathequeData() throws SQLException {
+		String dbUrl = "jdbc:mysql://localhost:3306/appserv";
+		String dbUser = "root";
+		String dbPassword = "rootsql";
+		connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword); // Connection à la db
 	}
 
 	// renvoie la liste de tous les documents disponibles de la médiathèque
@@ -56,20 +64,15 @@ public class MediathequeData implements PersistentMediatheque {
 		// args[0] -> le titre
 		// args [1] --> l'auteur
 		// etc... variable suivant le type de document
+
 	}
 
 	private Utilisateur getInDB(String login, String password) throws SQLException {
-		String dbUrl = "jdbc:mysql://localhost:3306/appserv";
-		String dbUser = "root";
-		String dbPassword = "rootsql";
-		connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword); // Connection à la db
-
 		String query = "SELECT * from utilisateur";
 
 		PreparedStatement dynStatement = connection.prepareStatement(query);
 
 		ResultSet resultStatement = dynStatement.executeQuery();
-		System.out.println("MEDIATHEQUE DATA");
 
 		while (resultStatement.next()) {
 			// Depuis la db recuperee les donnees
